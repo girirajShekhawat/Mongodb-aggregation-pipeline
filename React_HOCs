@@ -1,0 +1,64 @@
+Higher order components are the function which takes a component as an argument and return a new component.
+HOCs are not part of the React Library itsef, but it is a pattern that emerged from reacts compositional nature.
+
+Uses of the HOC:
+
+Conditional rendering: It can conditionally render components based on certain logics such as user authentication or permission checks.
+
+Authentication:We can Implement user authentication and authorization. A HOC can protect routes or components, ensuring that only authenticated users have access to the particular route.
+
+HOC code structure :=>
+ 
+const UpdatedComponent = (OriginalComponent) => {
+
+  function NewComponent(props) {
+
+    return <OriginalComponent />
+
+  }
+  return NewComponent;
+}
+export default UpdatedComponent
+
+   
+   Example=>
+
+Here I have written a counter that works on clicking on the Increment button using the HOC functionality
+ 
+
+ HOC to add counting functionality
+
+const Counter = (WrappedComponent) => {
+  const [count, setCount] = useState(0)
+
+  const increment = () => {
+    setCount(count + 1)
+  };
+
+  return (
+    <div>
+      <button onClick={increment}>Increment</button>
+      <p>Count: {count}</p>
+      <WrappedComponent count={count} increment={increment} />
+    </div>
+  );
+};
+
+ Functional component to be enhanced
+
+function MyComponent({ count, increment }) {
+  return (
+    <div>
+      <h2>Enhanced Component</h2>
+      <p>Count from HOC: {count}</p>
+      <button onClick={increment}>Increment from HOC</button>
+    </div>
+  );
+}
+
+ Apply the HOC to the component
+const EnhancedComponent = Counter(MyComponent);
+
+Usage:
+<EnhancedComponent />
+
