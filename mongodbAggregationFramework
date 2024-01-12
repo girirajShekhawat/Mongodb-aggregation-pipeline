@@ -1,0 +1,79 @@
+
+Q.1= What is Mongodb?
+ans. Mongodb is a document based NOSQL database.In mongodb data is organised in collections that are made up of BSON ducuments.
+     BSON is similare to the JSON but have more functionality than the json we can say json is the subset of the bson.
+
+Q.2=What is the Mongodb aggregation framework?
+ans. This is the  tool makes mongodb more powerfull. By this we can process and analyse data. It allows us to perform complex transformations and calculations on documents across the entire collection or the specific part of collection.
+It is the pipeline based framework and in pipeline it uses serries of stages that transform documents step by step.   
+
+Example:
+
+ In data.js file we have some dummy data of user with the name, age,favoriteColor, favoriteFruit now I will write aggregation pipelines on this data to find the following ;
+
+1. Avg age of the users
+
+2. Top most favorite fruit of the users.
+ 
+ 
+Aggregation pipeline for finding the avg age=>
+
+data.users.aggregate([
+  
+  {
+    $group:{
+        _id:"null",
+        avgAge:{
+            $avg:"$age"
+        }
+    }
+  }  
+  
+
+])
+
+Stages involved=
+ $group  
+ This stage is grouping the documents in one document.
+ Passing the "null" can group in one document either it will group according to the fiels passed.
+ After that using the $avg as an accumalator given us the average age of the user
+ 
+
+Aggregation pipeline for finding top most favorite fruit of the users=>
+
+data.users.aggregate([
+  
+  {
+    $group:{
+        _id:"$favoriteFruit ",
+
+        count:{
+            $sum:1
+        }
+    }
+  },
+
+<!-- Now we will sort the given documents on the bases of the count -->
+
+{
+    $sort:{
+        count:-1
+    }
+}
+,
+<!-- this will return us the top most result -->
+{
+    $limit:1
+}
+
+])
+
+Stages Involved=
+ $group 
+ This will group the documents on the favrouite fruit field and count the fruits on using $sum.
+ $sort
+ This will sort the documents in decending order
+ $limit
+ This will  limit the number of favrouite fruit to 1
+
+
